@@ -20,7 +20,6 @@ enum GENDER { male , female }
 
 
 extension GenderExtension on GENDER {
-  
   String get stringValue {
     switch (this) {
       case GENDER.male:

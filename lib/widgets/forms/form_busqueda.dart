@@ -1,4 +1,9 @@
+import 'dart:js_interop';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 
 /// FORMULARIO  de busqueda el cual se compone de un boton y un inputetext para el cual será el encargado
@@ -6,7 +11,7 @@ import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 /// Requiere un parametro [textEditingControllerInput] de tipo TextEditingController para poder obtener las 
 /// propiedades del valor del input que es otro elemento encapsulado creado de manera personalizada [CustomTextFormField]
 /// en la clase tenemos a la escucha de eventos del formulario tanto al cambio como al postear el formulario
-
+//ojo.. importacion dart
 class FormBusqueda extends StatelessWidget {
 
   // CONSTRUCTOR
@@ -18,9 +23,12 @@ class FormBusqueda extends StatelessWidget {
 
   final TextEditingController _textEditingControllerInput;
 
+
   @override
   Widget build(BuildContext context) {
 
+  final usersProvider = context.watch<UserProvider>();
+  
     return Form(
 
       child: Row(
@@ -32,7 +40,11 @@ class FormBusqueda extends StatelessWidget {
               hint: 'Full name',
               onChanged: (value) {
                 print('$value ...');
-                // TODO: VALOR ACTUALIZADO AL CAMBIO DEL INPUT
+                
+                        // if( value == ''){
+
+                        //       usersProvider.loadUsers();
+                        // }
               },
             ),
           ),
@@ -47,8 +59,13 @@ class FormBusqueda extends StatelessWidget {
             ),
             onPressed: () {
               String inputValue = _textEditingControllerInput.text;
+            
               print('$inputValue <-----');
-              // TODO: AQUI DEVEMOS LLAMAR AL PROVIDER QUE NOS FLITRE EL RESULTADO DE LA LISTA
+              
+              usersProvider.findUsers( inputValue );
+
+
+
             },
           )
         ],
