@@ -1,9 +1,6 @@
-import 'dart:js_interop';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 
 /// FORMULARIO  de busqueda el cual se compone de un boton y un inputetext para el cual será el encargado
@@ -11,7 +8,7 @@ import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 /// Requiere un parametro [textEditingControllerInput] de tipo TextEditingController para poder obtener las 
 /// propiedades del valor del input que es otro elemento encapsulado creado de manera personalizada [CustomTextFormField]
 /// en la clase tenemos a la escucha de eventos del formulario tanto al cambio como al postear el formulario
-//ojo.. importacion dart
+//ojo.. importacion dart import 'dart:js_interop';
 class FormBusqueda extends StatelessWidget {
 
   // CONSTRUCTOR
@@ -41,10 +38,10 @@ class FormBusqueda extends StatelessWidget {
               onChanged: (value) {
                 print('$value ...');
                 
-                        // if( value == ''){
+                        if( value == ''){
 
-                        //       usersProvider.loadUsers();
-                        // }
+                              usersProvider.loadUsers();
+                        }
               },
             ),
           ),

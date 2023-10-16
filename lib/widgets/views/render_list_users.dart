@@ -28,7 +28,7 @@ class RenderizarListaUsuarios extends StatelessWidget {
 
       child: Center(
 
-        child: ListView.builder(
+        child: listUsers.isNotEmpty ?  ListView.builder(
 
           scrollDirection: Axis.vertical,
 
@@ -36,13 +36,15 @@ class RenderizarListaUsuarios extends StatelessWidget {
 
           itemBuilder: (context, index) {
 
-
+// TODO: -----> SI LA LISTA DE USUARIOS ESTÁ VACÍA MOSTRAR UN MENSAJE <-------
+// TODO: -----> DEVERÍAMOS COMPROBAR CONSTANTEMENTE EN EL INPUT SI HAY USUARIOS TAMBIEN
+// TODO: -----> POR QUE SI NO NO SE ACTUALIZA LA LISTA HASTA QUE NO DEJAMOS EL INPUT A ''
             final usuario = listUsers[ index ];
 
             return InfoUserEditDelete( user: usuario );    
             
           },
-        ),
+        ) : Text('No hay usuarios en la Lista'),
       )
       );
   }

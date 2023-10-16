@@ -14,7 +14,9 @@ Future<void> loadUsers() async {
 
           await Future.delayed( const Duration( seconds: 2) );
 
-          List<User> users = usersListRepository;
+          usersProvider = [];
+
+          List<User> users = usersListRepository.toSet().toList();
           
           usersProvider.addAll( users );
 
