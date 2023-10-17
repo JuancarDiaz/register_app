@@ -22,31 +22,89 @@ class RenderizarListaUsuarios extends StatelessWidget {
 
     final usersProvider = context.watch<UserProvider>();
 
-    final listUsers =  usersProvider.usersProvider;
+    final listUsers =  usersProvider.sowhowlistUsersProvider;
 
     return Expanded(
 
       child: Center(
 
-        child: listUsers.isNotEmpty ?  ListView.builder(
-
-          scrollDirection: Axis.vertical,
-
-          itemCount: listUsers.length,
-
-          itemBuilder: (context, index) {
-
-// TODO: -----> SI LA LISTA DE USUARIOS ESTÁ VACÍA MOSTRAR UN MENSAJE <-------
-// TODO: -----> DEVERÍAMOS COMPROBAR CONSTANTEMENTE EN EL INPUT SI HAY USUARIOS TAMBIEN
-// TODO: -----> POR QUE SI NO NO SE ACTUALIZA LA LISTA HASTA QUE NO DEJAMOS EL INPUT A ''
-            final usuario = listUsers[ index ];
-
-            return InfoUserEditDelete( user: usuario );    
-            
-          },
-        ) : Text('No hay usuarios en la Lista'),
+        child: listUsers.isNotEmpty 
+                                    ? 
+                                      _RenderInfoUser( listUsers: listUsers ) 
+                                    : 
+                                      const _MessageDataNotFound(),
       )
       );
+  }
+}
+
+
+///
+///
+/// Clase destinada a renderizar la información del usuario recibe como parámetro [listUsers] la lista de 
+/// usuarios a renderizar
+///
+///
+
+class _RenderInfoUser extends StatelessWidget {
+  const _RenderInfoUser({
+                          required this.listUsers,
+  });
+
+  final List<User> listUsers;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+
+           scrollDirection: Axis.vertical,
+
+           itemCount: listUsers.length,
+
+           itemBuilder: (context, index) {
+
+               final usuario = listUsers[ index ];
+
+               return InfoUserEditDelete( user: usuario );    
+             
+           },
+         );
+  }
+}
+
+
+
+
+
+///
+///  Clase destinada a mostrar un mensaje que informe que no se han encontrado resultados
+///
+
+
+class _MessageDataNotFound extends StatelessWidget {
+  const _MessageDataNotFound();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding( // elementos centrados
+
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+
+      child: ClipRRect( 
+                        
+                child: Material( // Creamos un contenedor de Material para darle la apariencia
+            
+                            color: const Color.fromARGB(255, 250, 248, 217),
+                            shadowColor: Colors.black,
+                            borderRadius: BorderRadius.circular(5), // al clipRect Ledamos un borde
+                            child: const Padding(
+
+                                  padding:  EdgeInsets.symmetric(horizontal: 90, vertical: 20),
+                                  child:  Text('No se encuentran resultados.')
+                                  ),
+                          )
+                        ),
+                );
   }
 }
 

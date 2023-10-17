@@ -36,12 +36,9 @@ class FormBusqueda extends StatelessWidget {
               controller: _textEditingControllerInput,
               hint: 'Full name',
               onChanged: (value) {
-                print('$value ...');
-                
-                        if( value == ''){
 
-                              usersProvider.loadUsers();
-                        }
+                usersProvider.findUsers( value, tiempoEspera: 400 );
+  
               },
             ),
           ),
@@ -57,11 +54,7 @@ class FormBusqueda extends StatelessWidget {
             onPressed: () {
               String inputValue = _textEditingControllerInput.text;
             
-              print('$inputValue <-----');
-              
-              usersProvider.findUsers( inputValue );
-
-
+                 usersProvider.findUsers( inputValue, tiempoEspera: 150 );
 
             },
           )

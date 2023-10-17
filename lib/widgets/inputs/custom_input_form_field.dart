@@ -49,6 +49,7 @@ class CustomTextFormField extends StatelessWidget {
 
       onChanged: onChanged,
       validator: validator,
+      
       obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
@@ -63,6 +64,7 @@ class CustomTextFormField extends StatelessWidget {
                     hintText: hint,
                     errorText:  errorMessage,
                     focusColor: colors.primary
+                    
       ),
 
     );

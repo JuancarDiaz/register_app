@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:register_app/widgets/helpers/modal_helper.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 import 'package:register_app/widgets/forms/form_busqueda.dart';
 import 'package:register_app/widgets/views/render_list_users.dart';
@@ -27,12 +28,13 @@ class MainPageRegister extends StatelessWidget {
 
     return  Scaffold(
 
-
             body: SafeArea(
 
                     child: _HeaderFilterAndBodyCustom(formattedDate: formattedDate),
               ),
-          floatingActionButton: const _BotonModal(),
+
+            floatingActionButton: const _NewUserModal(),
+
     ) ;
   }
 }
@@ -40,26 +42,29 @@ class MainPageRegister extends StatelessWidget {
 
 
 /// ENCAPSULAMOS el boton modal
+/// llamamos a la clase estatica de helpers para acceder al modal[HelperModal.fireModal]
+/// dicho metodo utiliza el segundo argumento [operacion] para mandar al modal la opcion de CREAR O EDITAR
+/// y mostrar elementos en concreto
+/// boton usado para lanzar el MODAL y crear usuarios nuevos
 
-
-class _BotonModal extends StatelessWidget {
-  const _BotonModal();
+class _NewUserModal extends StatelessWidget {
+  const _NewUserModal();
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-                                  onPressed: (){
 
-                                    print('aparicion del modal');
-                                    // TODO: APARICION DEL MODAL CREAR CREAR USUARIO
-                                  },
-                                  icon: const Icon(Icons.add),
-                                  iconSize: 41,
-                                  color: Colors.white ,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue.shade900,
-                                  ),
-                                  );
+        return IconButton(
+                      
+          onPressed: () => HelperModal.fireModal(context,'NEW'),
+
+                                icon: const Icon(Icons.add),
+                                iconSize: 41,
+                                color: Colors.white ,
+                                style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade900,
+                                ),
+                                
+                      );
   }
 }
 
@@ -69,12 +74,10 @@ class _BotonModal extends StatelessWidget {
 
 
 
-
-
-
-
+/// 
 /// Creación de un encabezado personalizado donde se configura la fecha en su formato correcto y 
 /// para importar formateo de las fechas usamos la dependencia de [intl: ^0.17.0]  
+/// 
 class _HeaderFilterAndBodyCustom extends StatelessWidget {
       _HeaderFilterAndBodyCustom({required this.formattedDate,});
 
@@ -96,8 +99,7 @@ class _HeaderFilterAndBodyCustom extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center, // centrado del contenido
         
                 children: [
-            
-            
+ 
                   _Header(formattedDate: formattedDate),
 
                   _Filtro(textEditingControllerInput: _textEditingControllerInput),
@@ -159,17 +161,16 @@ const _Filtro({
 
 
 
-///
+
 ///
 /// Cabecera de la pagina principal donde centramos un widget que contiene tanto un saludo como la fecha actual
-///
+/// recibe la fecha por parametro [formattedDate]
 ///
 
 class _Header extends StatelessWidget {
   const _Header({
-    super.key,
-    required this.formattedDate,
-  });
+                  required this.formattedDate,
+                });
 
   final String formattedDate;
 

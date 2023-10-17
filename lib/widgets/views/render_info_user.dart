@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:register_app/infraestructure/models/usuario.dart';
+import 'package:register_app/presentation/providers/users_provider.dart';
 
 
 ///
@@ -88,6 +90,9 @@ class _ButtonerRigth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+        final userProvider = context.watch<UserProvider>();
+
     return Row(
 
 
@@ -113,8 +118,8 @@ class _ButtonerRigth extends StatelessWidget {
                                 ),
                                 onPressed: (){
 
-                                        // TODO: DELETE
-                                        print( 'DELETE'+ user.id.toString() );
+                                        userProvider.deleteUser(user.id.toString());
+                                     
                                             },
             ),
             
