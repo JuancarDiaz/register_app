@@ -145,7 +145,6 @@ final List<String> generos = [
       final TextEditingController _textEditingControllerName;
       final TextEditingController _textEditingControllerSurname;
       
-      
 
       // Constructor
       _BodyFormModalState()
@@ -175,6 +174,8 @@ Future<DateTime?> getDateTimePicker() {
   Widget build(BuildContext context) {
 
     final usersProvider = context.watch<UserProvider>();
+     
+
     
     return  Padding(
 
@@ -189,9 +190,9 @@ Future<DateTime?> getDateTimePicker() {
             const SizedBox(height: 10),
       
             CustomTextFormField(
-                                      hint: '  *Name',
+                                      hint: usersProvider.userEdited.isNotEmpty ? usersProvider.userEdited[0].fullName : '  *Name',
                                       controller: _textEditingControllerName,
-
+                                       
                                       ),
             
             const SizedBox(height: 10),
@@ -362,7 +363,7 @@ Wrap(
 
                                     final User user = User(
                                                               fullName: _textEditingControllerName.text,
-                                                              
+                                                              surname: _textEditingControllerSurname.text,
                                                               birthDate: _currentSelectedDate,
                                                               gender: selectedValueGender == 'Male'? GENDER.male : GENDER.female 
                                                               );

@@ -10,7 +10,7 @@ import 'package:register_app/infraestructure/repositorys/users/repository_users.
 /// simulando la procedencia de bases de datos o un servicio, dicho objeto no es tocado
 /// pero es necesario para copiar su información en [copyListUsersProvider] y [sowhowlistUsersProvider]
 /// respectivamente.
-/// Ambos son necesarios [sowhowlistUsersProvider] -> destinado a mostrar los datos finalmente
+/// Ambos son necesarios [showowlistUsersProvider] -> destinado a mostrar los datos finalmente
 /// y [copyListUsersProvider] es modificado cuando se produce borrado
 ///
 ///
@@ -20,7 +20,8 @@ class UserProvider extends ChangeNotifier {
 
 List<User> listUsersProvider = [];
 List<User> copyListUsersProvider = [];
-List<User> sowhowlistUsersProvider = [];
+List<User> showowlistUsersProvider = [];
+List<User> userEdited = [];
 bool initialLoadding = true;
 
 
@@ -38,7 +39,7 @@ Future<void> loadUsers() async {
           listUsersProvider.addAll( users );
 
           copyListUsersProvider          = [...listUsersProvider];    // copiamos la listas a otros objetos en memoria
-          sowhowlistUsersProvider        = [...listUsersProvider];
+          showowlistUsersProvider        = [...listUsersProvider];
 
           initialLoadding = false;
 
@@ -57,9 +58,9 @@ Future<void> findUsers( String userName , {int tiempoEspera = 100} ) async {
 
       await Future.delayed(  Duration( milliseconds: tiempoEspera) );
 
-      sowhowlistUsersProvider = [...copyListUsersProvider];
+      showowlistUsersProvider = [...copyListUsersProvider];
 
-      sowhowlistUsersProvider = sowhowlistUsersProvider.where((user) => user.fullName.contains(userName) ).toList();
+      showowlistUsersProvider = showowlistUsersProvider.where((user) => user.fullName.contains(userName) ).toList();
 
        notifyListeners();
 }
@@ -76,7 +77,7 @@ Future<void> deleteUser( String idUser ) async{
 
          copyListUsersProvider.removeAt(indexUser);
 
-         sowhowlistUsersProvider = [...copyListUsersProvider];
+         showowlistUsersProvider = [...copyListUsersProvider];
 
          notifyListeners();
 }
@@ -85,19 +86,50 @@ Future<void> deleteUser( String idUser ) async{
 
 ///
 ///
-///
+/// Añadir a un usuario a la lista
 ///
 ///
 
 Future<void> addUser(User user) async{
 
+  userEdited.clear();
+
   await Future.delayed( const Duration(milliseconds: 200));
 
 
   copyListUsersProvider.add(user);
-  sowhowlistUsersProvider.add(user);
+  showowlistUsersProvider.add(user);
   
    notifyListeners();
 }
+
+
+
+///
+///
+/// ENCONTRAR UN USUARIO
+///
+///
+///
+
+Future<void> findUser( String id ) async {
+
+    userEdited.clear();
+
+    await Future.delayed( const Duration(milliseconds: 200));
+
+    User user = showowlistUsersProvider.firstWhere((user) => user.id == id);
+
+    userEdited.add(user);
+
+    notifyListeners();
+}
+
+void borrarUser() => {
+ 
+  userEdited.clear(),
+  notifyListeners(),
+  
+};
 
 }

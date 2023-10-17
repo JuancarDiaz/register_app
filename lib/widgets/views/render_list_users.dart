@@ -22,7 +22,7 @@ class RenderizarListaUsuarios extends StatelessWidget {
 
     final usersProvider = context.watch<UserProvider>();
 
-    final listUsers =  usersProvider.sowhowlistUsersProvider;
+    final listUsers =  usersProvider.showowlistUsersProvider;
 
     return Expanded(
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:register_app/infraestructure/models/usuario.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
+import 'package:register_app/widgets/helpers/modal_helper.dart';
 import 'package:register_app/widgets/helpers/shared_helpers.dart';
 
 
@@ -99,10 +100,16 @@ class _ButtonerRigth extends StatelessWidget {
                                 iconSize: MaterialStateProperty.all(30),
                                 iconColor: MaterialStateProperty.all(Colors.grey), // Color del icono
                                 ),
-                                onPressed: (){
+                                onPressed:  () async {
 
-                                        // TODO: EDIT
-                                        print( 'EDIT '+ user.id.toString() );
+// TODO: EDIT
+                                        
+
+                                        userProvider.findUser(user.id).then((value) {
+
+                                            HelperModal.fireModal(context, 'EDIT');
+                                        });
+
                                             } 
                           ),
             
@@ -150,7 +157,6 @@ class _ButtonerRigth extends StatelessWidget {
 
 class _InfoUserLeft extends StatelessWidget {
   const _InfoUserLeft({
-    super.key,
     required this.user,
     required this.birthDateFormated,
   });
@@ -167,7 +173,7 @@ class _InfoUserLeft extends StatelessWidget {
 
        Text( user.fullName, style: const TextStyle(fontSize: 13), ),
        Text( 'Birthdate $birthDateFormated', style: const TextStyle(fontSize: 12) ),
-       Text( 'Genero: ' + user.gender.stringValue, style: const TextStyle(fontSize: 13) ),
+       Text( 'Genero: ${user.gender.stringValue}' , style: const TextStyle(fontSize: 13) ),
      ],
                               );
   }

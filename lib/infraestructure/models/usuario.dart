@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 class User {
   final String id;
   final String fullName;
-  // final String surname;
+  final String surname;
   final DateTime birthDate;
   final GENDER gender;
 
@@ -12,6 +12,7 @@ class User {
         required this.fullName,
         required this.birthDate,
         required this.gender,
+        required this.surname,
       })
          : id = Uuid().v4(); // Genera un nuevo UUID cada vez
 
@@ -21,7 +22,7 @@ class User {
 
           return '''${super.toString()}
                      Id:[$id], name:[$fullName],
-                     Surname:[ ],
+                     Surname:[$surname],
                      BirthDate:[$birthDate],
                      Genero:[${gender.toString()}]''';
         }

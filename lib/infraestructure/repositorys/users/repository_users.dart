@@ -7,14 +7,17 @@ List<User> usersListRepository =  [
 
         User(
             fullName: 'Juan Carlos Díaz',
+            surname: 'Diaz',
             birthDate: DateTime.now(),
             gender: GENDER.male
         ), User(
-            fullName: 'Elena Pérez',
+            fullName: 'Elena ',
+            surname: 'Pérez',
             birthDate: DateTime.now(),
             gender: GENDER.female
         ), User(
-            fullName: 'Eladio Potter',
+            fullName: 'Eladio',
+            surname: 'Potter',
             birthDate: DateTime.now(),
             gender: GENDER.male
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/helpers/modal_helper.dart';
 import 'package:register_app/widgets/forms/form_busqueda.dart';
 import 'package:register_app/widgets/views/render_list_users.dart';
@@ -52,9 +54,16 @@ class _NewUserModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+      final UserProvider userProvider = context.watch<UserProvider>();
+
         return IconButton(
                       
-          onPressed: () => HelperModal.fireModal(context,'NEW'),
+          onPressed: () {
+
+                                HelperModal.fireModal(context,'NEW');
+                                 userProvider.borrarUser();
+          },
+                               
 
                                 icon: const Icon(Icons.add),
                                 iconSize: 41,
