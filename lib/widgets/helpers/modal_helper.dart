@@ -1,4 +1,8 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:register_app/infraestructure/models/usuario.dart';
+import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/helpers/shared_helpers.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 
@@ -81,9 +85,12 @@ class _HeaderInfoModal extends StatelessWidget {
               ],
             ),
 
-            const _BodyFormModal(),
+             _BodyFormModal(operacion: operacion, ),
 
-            _ButtonerModal( operacion: operacion,)
+
+
+
+
 
           ],
         ),
@@ -100,7 +107,9 @@ class _HeaderInfoModal extends StatelessWidget {
 
 class _BodyFormModal extends StatefulWidget {
 
-  const _BodyFormModal();
+final String operacion;
+
+  const _BodyFormModal({ this.operacion = 'NEW'});
 
   @override
   State<_BodyFormModal> createState() => _BodyFormModalState();
@@ -120,19 +129,32 @@ class _BodyFormModal extends StatefulWidget {
 class _BodyFormModalState extends State<_BodyFormModal> {
 
       // Variables
+  final List<String> items = [
+    'Male',
+    'Female',
+  ];
+
+final List<String> generos = [
+    'Male',
+    'Female',
+  ];
+
+      String? selectedValueGender;
       var  _currentSelectedDate;
       final TextEditingController _textEditingControllerDatePicker;
       final TextEditingController _textEditingControllerName;
       final TextEditingController _textEditingControllerSurname;
-      final TextEditingController _textEditingControllerDateGender;
-      String dropdownValue = list.first;
+      
+      
 
       // Constructor
       _BodyFormModalState()
                             : _textEditingControllerDatePicker = TextEditingController(),
                               _textEditingControllerName = TextEditingController(),
-                              _textEditingControllerSurname = TextEditingController(),
-                              _textEditingControllerDateGender = TextEditingController();
+                              _textEditingControllerSurname = TextEditingController();
+                              
+                               
+                            
 
 Future<DateTime?> getDateTimePicker() {
 
@@ -151,6 +173,9 @@ Future<DateTime?> getDateTimePicker() {
 
   @override
   Widget build(BuildContext context) {
+
+    final usersProvider = context.watch<UserProvider>();
+    
     return  Padding(
 
 
@@ -202,75 +227,110 @@ Future<DateTime?> getDateTimePicker() {
       
                                         }, 
                                       ),//,
-            const SizedBox(height: 10),
-            CustomTextFormField(
-                                  icon: const Icon(Icons.expand_more, size: 30),
-                                  controller: _textEditingControllerDateGender,
-                                  iconAction: (){
-      
-      //TODO: MOSTRAR UN SELECT
-      
-                                  }
+  
+           
 
-                                  ),// 
+                                 // 
                                   const SizedBox(height: 10,),
 
                                   
-                                    
-                                    DropdownMenu<String>(
-                                      
-                                      width: 320,
-                                      trailingIcon: const Icon(Icons.expand_more, size: 30),
-                                      inputDecorationTheme: InputDecorationTheme(
-                                       
-                                        border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(11),
+                                                         
+                                Center(
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton2<String>(
+                                            isExpanded: true,
+                                            hint: const Row(
+                                              children: [
+                                                // Icon(
+                                                //   Icons.list,
+                                                //   size: 16,
+                                                //   color: Colors.black,
+                                                // ),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    ' *Gender',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            items: generos
+                                                .map((String item) => DropdownMenuItem<String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.black,
+                                                        ),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            value: selectedValueGender,
+                                            onChanged: (String? value) {
+                                              setState(() {
+                                                selectedValueGender = value;
+                                              });
+                                            },
+                                            buttonStyleData: ButtonStyleData(
+                                              height: 51,
+                                              width: 326,
+                                              padding: const EdgeInsets.only(left: 14, right: 14),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(9),
+                                                border: Border.all(
+                                                  color: Colors.black26,
+                                                ),
+                                                color: const Color.fromARGB(255, 236, 235, 235),
+                                              ),
+                                              elevation: 2,
+                                            ),
+                                            iconStyleData: const IconStyleData(
+                                              icon: Icon(
+                                                Icons.expand_more,
+                                                  size: 30,
+                                              ),
+                                              iconSize: 14,
+                                              iconEnabledColor: Colors.black,
+                                              iconDisabledColor: Colors.grey,
+                                            ),
+                                            dropdownStyleData: DropdownStyleData(
+                                              maxHeight: 200,
+                                              width: 320,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(10),
+                                                color: Colors.white,
+                                              ),
+                                              offset: const Offset(0, 0),
+                                              scrollbarTheme: ScrollbarThemeData(
+                                                radius: const Radius.circular(10),
+                                                thickness: MaterialStateProperty.all<double>(6),
+                                                thumbVisibility: MaterialStateProperty.all<bool>(true),
+                                              ),
+                                            ),
+                                            menuItemStyleData: const MenuItemStyleData(
+                                              height: 30,
+                                              padding: EdgeInsets.only(left: 14, right: 14),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      isDense: true,
-                                      
-                                      ),
-                                      initialSelection: list.first,
-                                      onSelected: (String? value) {
-                                        // This is called when the user selects an item.
-                                        setState(() {
-                                          dropdownValue = value!;
-                                        });
-                                      },
-                                      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
-                                        return DropdownMenuEntry<String>(value: value, label: value);
-                                      }).toList(),
-                                   ),
-                                  
+    const SizedBox(height: 20),
 
 
 
-          ],
-        ),
-     
-      ),
 
-
-
-    );
-  }
-}
-
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-///
-/// parte final del formulario que hace refencia a la parte de los botones
-///
-
-class _ButtonerModal extends StatelessWidget {
-
-  final String operacion;
-
-  const _ButtonerModal({
-                        required this.operacion
-                      });
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
+Wrap(
       alignment: WrapAlignment.center, // Alineación centrada
       children: [
         ElevatedButton(
@@ -293,11 +353,23 @@ class _ButtonerModal extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             
-                switch ( operacion ) {
+                switch ( widget.operacion ) {
 
                   
                     case 'NEW':
                                   // TODO: CREAR NUEVO USUARIO!
+
+
+                                    final User user = User(
+                                                              fullName: _textEditingControllerName.text,
+                                                              
+                                                              birthDate: _currentSelectedDate,
+                                                              gender: selectedValueGender == 'Male'? GENDER.male : GENDER.female 
+                                                              );
+
+                                                         
+                                                          usersProvider.addUser(user);
+                                                          Navigator.pop(context);
 
                       break;
 
@@ -307,7 +379,7 @@ class _ButtonerModal extends StatelessWidget {
                 
                 }
 
-            // TODO: OPERACIONES! borrado / edición 
+    
           },
           style: ButtonStyle(
               minimumSize:
@@ -316,14 +388,141 @@ class _ButtonerModal extends StatelessWidget {
                   const Color.fromARGB(
                       255, 14, 16, 143)) // Ancho y alto específicos
               ),
-          child: operacion == 'NEW'
+          child: widget.operacion == 'NEW'
                                   ? const Text('Save')
                                   : const Text('Update'),
         ),
       ],
+   
+)
+
+
+
+
+
+          ],
+        ),
+     
+      ),
+
+
+
     );
   }
 }
 
 
+///
+/// parte final del formulario que hace refencia a la parte de los botones
+///
 
+// class _ButtonerModal extends StatelessWidget {
+
+//   final String operacion;
+//   // final String genderValue;
+//   // final DateTime dateTimeValue;
+//   // final String name;
+//   // final String surname;
+
+//   const _ButtonerModal({
+//                         required this.operacion,
+//                         // required this.genderValue,
+//                         // required this.dateTimeValue,
+//                         // required this.name,
+//                         // required this.surname,
+//                       });
+
+//   @override
+//   Widget build(BuildContext context) {
+    // return Wrap(
+    //   alignment: WrapAlignment.center, // Alineación centrada
+    //   children: [
+    //     ElevatedButton(
+    //       onPressed: () {
+            
+    //         Navigator.pop(context);
+    //       },
+    //       style: ButtonStyle(
+    //           minimumSize:
+    //               MaterialStateProperty.all(const Size(105, 28)),
+    //           backgroundColor: MaterialStateProperty.all(
+    //               const Color.fromARGB(255, 223, 223,
+    //                   225)) // Ancho y alto específicos
+    //           ),
+    //       child: const Text('Cancelar'),
+    //     ),
+    //     const SizedBox(
+    //       width: 10,
+    //     ),
+    //     ElevatedButton(
+    //       onPressed: () {
+            
+    //             switch ( operacion ) {
+
+                  
+    //                 case 'NEW':
+    //                               // TODO: CREAR NUEVO USUARIO!
+
+    //                   break;
+
+    //                   case 'EDIT':
+    //                               // TODO: EDITAR NUEVO USUARIO!
+    //                   break;
+                
+    //             }
+
+    //         // TODO: OPERACIONES! borrado / edición 
+    //       },
+    //       style: ButtonStyle(
+    //           minimumSize:
+    //               MaterialStateProperty.all(const Size(105, 28)),
+    //           backgroundColor: MaterialStateProperty.all(
+    //               const Color.fromARGB(
+    //                   255, 14, 16, 143)) // Ancho y alto específicos
+    //           ),
+    //       child: operacion == 'NEW'
+    //                               ? const Text('Save')
+    //                               : const Text('Update'),
+    //     ),
+    //   ],
+    // );
+//   }
+// }
+
+
+
+
+
+
+/**
+ * 
+ *  DROPDOWN echo por mi pero me he optado por usar la librería de terceros dropdown_button2
+ * 
+ *   
+                                  //   DropdownMenu<String>(
+                                      
+                                  //     width: 320,
+                                  //     trailingIcon: const Icon(Icons.expand_more, size: 30),
+                                  //     inputDecorationTheme: InputDecorationTheme(
+                                       
+                                  //       border: OutlineInputBorder(
+                                  //                 borderRadius: BorderRadius.circular(11),
+                                  //     ),
+                                  //     isDense: true,
+
+                                  //     ),
+                                  //     initialSelection: list.first,
+                                  //     onSelected: (String? value) {
+                                  //       // This is called when the user selects an item.
+                                  //       setState(() {
+                                  //         dropdownValue = value!;
+                                  //       });
+                                  //     },
+                                  //     dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
+                                  //       return DropdownMenuEntry<String>(value: value, label: value);
+                                  //     }).toList(),
+                                  //  ),
+ * 
+ * 
+ * 
+ */

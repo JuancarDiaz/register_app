@@ -83,6 +83,21 @@ Future<void> deleteUser( String idUser ) async{
 
 
 
+///
+///
+///
+///
+///
 
+Future<void> addUser(User user) async{
+
+  await Future.delayed( const Duration(milliseconds: 200));
+
+
+  copyListUsersProvider.add(user);
+  sowhowlistUsersProvider.add(user);
+  
+   notifyListeners();
+}
 
 }
