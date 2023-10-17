@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:register_app/infraestructure/models/usuario.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
+import 'package:register_app/widgets/helpers/shared_helpers.dart';
 
 
 ///
@@ -24,12 +25,7 @@ class InfoUserEditDelete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
  
-    final birthDate = user.birthDate.toString().split(' ')[0];//.replaceAll('-','/');
-    final dia = birthDate.split('-')[2];
-    final mes = birthDate.split('-')[1];
-    final anio = birthDate.split('-')[0];
-
-    final birthDateFormated = '$dia/$mes/$anio';
+    final birthDateFormated = Utils.dateFormatter( user.birthDate );
 
     return Padding( // elementos centrados
 

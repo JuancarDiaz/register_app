@@ -20,6 +20,10 @@ class CustomTextFormField extends StatelessWidget {
   final Function (String)?onChanged;
   final String Function(String?)? validator;
   final TextEditingController? controller;
+  final Function ()?onTap;
+  final Icon? icon;
+  final Function()? iconAction;
+  final bool disabled;
 
   // Constructor con parametros opcionales
   const CustomTextFormField({
@@ -28,9 +32,13 @@ class CustomTextFormField extends StatelessWidget {
                               this.hint,
                               this.errorMessage,
                               this.obscureText = false,
+                              this.disabled = true,
                               this.onChanged,
                               this.validator,
-                              this.controller
+                              this.controller,
+                              this.onTap,
+                              this.icon,
+                              this.iconAction
                             });
 
   @override
@@ -42,19 +50,21 @@ class CustomTextFormField extends StatelessWidget {
     /// configuramos el color del borde para incluir en los inputs y su forma
     final border = OutlineInputBorder(
                                         borderRadius: BorderRadius.circular( 10 ),
-                                        borderSide: BorderSide( color: colors.primary )
+                                        borderSide: const BorderSide( color: Color.fromARGB(255, 165, 162, 162) )
     );
 
     return TextFormField(
 
+      
       onChanged: onChanged,
       validator: validator,
+      onTap: onTap,
       
       obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
 
-                    
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
                     enabledBorder: border,
                     focusedBorder: border.copyWith( borderSide:const BorderSide( color:Colors.grey )),
                     errorBorder: border.copyWith( borderSide: BorderSide( color: Colors.red.shade800)),
@@ -63,9 +73,16 @@ class CustomTextFormField extends StatelessWidget {
                     label: label != null ? Text(label!) : null,
                     hintText: hint,
                     errorText:  errorMessage,
-                    focusColor: colors.primary
-                    
-      ),
+                    focusColor: colors.primary,
+                    enabled: disabled,
+                    suffixIcon: ( icon != null ) ?
+                                  InkWell(
+                                      onTap: iconAction,
+                                      child: icon) : null // Icono o widget que representa el botón
+      
+    ),             
+      
+
 
     );
   

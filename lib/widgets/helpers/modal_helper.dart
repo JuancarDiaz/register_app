@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:register_app/widgets/helpers/shared_helpers.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 
 ///
@@ -97,31 +98,164 @@ class _HeaderInfoModal extends StatelessWidget {
 ///
 
 
-class _BodyFormModal extends StatelessWidget {
+class _BodyFormModal extends StatefulWidget {
 
   const _BodyFormModal();
 
   @override
+  State<_BodyFormModal> createState() => _BodyFormModalState();
+}
+
+///
+///
+/// clase encargada de renderizar todo el contenido del formulario,
+/// con un metodo interno para invocar el datepicker [callDatePicker]
+/// Variables:
+///            [_currentSelectedDate] hacen referencia a los campos de los formularios, para su vinculación
+///            [_textEditingControllerName]
+///            [_textEditingControllerSurname]
+///            [_textEditingControllerDateGender]
+///
+
+class _BodyFormModalState extends State<_BodyFormModal> {
+
+      // Variables
+      var  _currentSelectedDate;
+      final TextEditingController _textEditingControllerDatePicker;
+      final TextEditingController _textEditingControllerName;
+      final TextEditingController _textEditingControllerSurname;
+      final TextEditingController _textEditingControllerDateGender;
+      String dropdownValue = list.first;
+
+      // Constructor
+      _BodyFormModalState()
+                            : _textEditingControllerDatePicker = TextEditingController(),
+                              _textEditingControllerName = TextEditingController(),
+                              _textEditingControllerSurname = TextEditingController(),
+                              _textEditingControllerDateGender = TextEditingController();
+
+Future<DateTime?> getDateTimePicker() {
+
+    return showDatePicker(
+                          context: context,
+                          initialDate: _currentSelectedDate ?? DateTime.now()  ,
+                          firstDate: DateTime(2017),
+                          lastDate: DateTime(2025),
+                          builder: (context, child) {
+
+                                return Theme(data: ThemeData.dark(), child: child!);
+                          },
+                          );
+}
+
+
+  @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-      child: Column(
-        children: [
-          SizedBox(height: 10),
-          CustomTextFormField(),
-          SizedBox(height: 10),
-          CustomTextFormField(),
-          SizedBox(height: 10),
-          CustomTextFormField(),
-          SizedBox(height: 10),
-          CustomTextFormField(),
-        ],
+    return  Padding(
+
+
+      padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+
+      child: Form(
+
+        child: Column(
+          children: [
+      
+            const SizedBox(height: 10),
+      
+            CustomTextFormField(
+                                      hint: '  *Name',
+                                      controller: _textEditingControllerName,
+
+                                      ),
+            
+            const SizedBox(height: 10),
+            
+            CustomTextFormField(
+                                       hint: '  *Surname',
+                                       controller: _textEditingControllerSurname,),
+            
+            const SizedBox(height: 10),
+            
+            CustomTextFormField(
+                                      icon: const Icon( Icons.event, size: 25),
+                                      controller: _textEditingControllerDatePicker,
+                                      onTap: ()async {
+                                        _currentSelectedDate = await getDateTimePicker();
+                                            try{
+                                                    _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate)}';
+                                            }catch(error ){
+                                                  _textEditingControllerDatePicker.text = '';
+                                            }
+                                      },
+                                      iconAction: () async {
+      
+      
+                                        _currentSelectedDate = await getDateTimePicker();
+
+                                                  try{
+                                                          _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate)}';
+                                                  }catch(error ){
+                                                        _textEditingControllerDatePicker.text = '';
+                                                  }
+                                      
+      
+                                        }, 
+                                      ),//,
+            const SizedBox(height: 10),
+            CustomTextFormField(
+                                  icon: const Icon(Icons.expand_more, size: 30),
+                                  controller: _textEditingControllerDateGender,
+                                  iconAction: (){
+      
+      //TODO: MOSTRAR UN SELECT
+      
+                                  }
+
+                                  ),// 
+                                  const SizedBox(height: 10,),
+
+                                  
+                                    
+                                    DropdownMenu<String>(
+                                      
+                                      width: 320,
+                                      trailingIcon: const Icon(Icons.expand_more, size: 30),
+                                      inputDecorationTheme: InputDecorationTheme(
+                                       
+                                        border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(11),
+                                      ),
+                                      isDense: true,
+                                      
+                                      ),
+                                      initialSelection: list.first,
+                                      onSelected: (String? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          dropdownValue = value!;
+                                        });
+                                      },
+                                      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
+                                        return DropdownMenuEntry<String>(value: value, label: value);
+                                      }).toList(),
+                                   ),
+                                  
+
+
+
+          ],
+        ),
+     
       ),
+
+
+
     );
   }
 }
 
-
+const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 ///
 /// parte final del formulario que hace refencia a la parte de los botones
 ///
@@ -164,6 +298,7 @@ class _ButtonerModal extends StatelessWidget {
                   
                     case 'NEW':
                                   // TODO: CREAR NUEVO USUARIO!
+
                       break;
 
                       case 'EDIT':
@@ -189,3 +324,6 @@ class _ButtonerModal extends StatelessWidget {
     );
   }
 }
+
+
+
