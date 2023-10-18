@@ -9,11 +9,10 @@ import 'package:register_app/widgets/views/render_list_users.dart';
 
 
 ///
-///
 /// [_HeaderFilterAndBodyCustom] clase personalizada que centraliza todos los elementos de la pantalla principal
 /// para facilitar su legibilidad aplicamos un SafeArea para evitar ocupar zonas del movil que ocupan otros usos
 ///
-///
+
 
 class MainPageRegister extends StatelessWidget {
   const MainPageRegister({super.key});
@@ -67,10 +66,10 @@ class _ButtonNewUserModal extends StatelessWidget {
                                
 
                                 icon: const Icon(Icons.add),
-                                iconSize: 41,
+                                iconSize: 47,
                                 color: Colors.white ,
                                 style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blue.shade900,
+                                        backgroundColor: const Color.fromARGB(255, 8, 42, 93),
                                 ),
                                 
                       );
@@ -102,7 +101,7 @@ class _HeaderFilterAndBodyCustom extends StatelessWidget {
 
     return Padding(       // Padding general a todo el bloque
             
-      padding:const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15), 
+      padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1), 
             
       child: Column( // Disposición interior en columnas de todos los elementos hijos
             
@@ -155,7 +154,7 @@ const _Filtro({
 
                       const SizedBox(height: 25),
                 
-                      const Text('Patient List'),
+                      const Text('Patient List',style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500)),
                       
                       const SizedBox(height: 25),
 
@@ -194,7 +193,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding( // elementos centrados
 
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+      padding: const EdgeInsets.fromLTRB(1, 1, 1, 13),
 
       child: ClipRRect( // Creamos un elemento en cual va ha tener forma de cuadrado y
                         // dentro de el metemos todos sus elementos uno a cada lado
@@ -216,8 +215,10 @@ class _Header extends StatelessWidget {
                                       
                         children: [
                           
-                          const Text('Hi, Welcome!'),
-                          Text( formattedDate ),
+                          const Text('Hi, Welcome!',style: TextStyle(fontSize: 22,
+                                                                      color: Color.fromARGB(255, 59, 80, 220),
+                                                                      fontWeight: FontWeight.w500)),
+                          Text( formattedDate ,style: const TextStyle(fontSize: 16)),
          
                         ],
                   ),

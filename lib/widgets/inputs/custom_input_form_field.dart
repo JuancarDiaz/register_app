@@ -64,7 +64,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
 
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12,horizontal: 16),
                     enabledBorder: border,
                     focusedBorder: border.copyWith( borderSide:const BorderSide( color:Colors.grey )),
                     errorBorder: border.copyWith( borderSide: BorderSide( color: Colors.red.shade800)),
@@ -78,7 +78,7 @@ class CustomTextFormField extends StatelessWidget {
                     suffixIcon: ( icon != null ) ?
                                   InkWell(
                                       onTap: iconAction,
-                                      child: icon) : null // Icono o widget que representa el botón
+                                      child: icon) : null // Icono o widget que representa el botón para poder clicar sobre el en caso necesario
       
     ),             
       

@@ -11,15 +11,13 @@ void main() {
 
 ///
 ///  Configuramos las RUTAS con la dependencia de go_router
-///  y añadimos nuestro PROVIDEN en el root de la aplicación
+///  y añadimos nuestro PROVIDER en el root de la aplicación
 ///  y con el operador de cascada '..' apuntamos al objeto raiz y llamamos al metodo para cargar el estado
 ///  pero realmente retorna un objeto de tipo UserProvider(), por defecto los providers actuan de manera Perezosa
 ///  por lo que en primer momento de general la aplicación llamamos el metodo del provider
 ///
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
                                   lazy: false,
                                   create: (context)=> UserProvider()..loadUsers()
-                                 )
+                                 ),
+     
+          
       ],
 
       child: MaterialApp.router(

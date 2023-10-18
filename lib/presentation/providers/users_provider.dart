@@ -3,17 +3,21 @@ import 'package:register_app/infraestructure/models/usuario.dart';
 import 'package:register_app/infraestructure/repositorys/users/repository_users.dart';
 
 
+/// Este es un Servicio proveedor de datos usando el paquete [provider] el cual necesita extender de [ChangeNotifier]
 ///
-///
-/// para gestionar el estado de los datos y que sean consistentes tengo varietos
+/// para gestionar el estado de los datos y que sean consistentes tengo una lista
 /// [listUsersProvider] -> es el encargado de obtener los valores del Repositorio
-/// simulando la procedencia de bases de datos o un servicio, dicho objeto no es tocado
+/// simulando la procedencia de bases de datos o un servicio externo, dicho objeto no es modificado
 /// pero es necesario para copiar su información en [copyListUsersProvider] y [sowhowlistUsersProvider]
 /// respectivamente.
-/// Ambos son necesarios [showowlistUsersProvider] -> destinado a mostrar los datos finalmente
-/// y [copyListUsersProvider] es modificado cuando se produce borrado
+///   [showowlistUsersProvider] -> destinado a mostrar los datos finalmente y
+///   [copyListUsersProvider] es modificado cuando se produce borrado
 ///
-///
+///   algunas de las explicaciones más relevantes, [ List<User> userEdited ] dentro de el solo albergamos un User con el controlamos el movimiento
+///   de los datos del usuario a EDITAR, y cuando sea necesario esa Lista se vacía para mantener cierto control en la aplicación
+/// 
+///   [loadMessage] booleano utilizado para mostrar mensajes de exito ya sea EDITANDO o CREANDO
+///   
 
 class UserProvider extends ChangeNotifier {
 
@@ -32,6 +36,7 @@ String operation = '';
 
 ///
 /// Carga inicial de valores por defecto de una fuente de datos
+/// datos cargados en el main con el operador de cascada
 ///
 
 Future<void> loadUsers() async {
@@ -42,8 +47,8 @@ Future<void> loadUsers() async {
           
           listUsersProvider.addAll( users );
 
-          copyListUsersProvider          = [...listUsersProvider];    // copiamos la listas a otros objetos en memoria
-          showowlistUsersProvider        = [...listUsersProvider];
+          copyListUsersProvider    = [...listUsersProvider];    // copiamos las listas a otros objetos en memoria
+          showowlistUsersProvider  = [...listUsersProvider];
 
           initialLoadding = false;
 
@@ -54,7 +59,7 @@ Future<void> loadUsers() async {
 
 
 ///
-/// Busque da de usuario por nombre con los parámetros [userName] para buscar por el nombre del usuario
+/// Busqueda de usuario por nombre con los parámetros [userName] para buscar por el nombre del usuario
 /// y el parámetro [tiempoEspera] para gestionar la espera asincronica en función de la operación requerida
 ///
 
@@ -70,9 +75,9 @@ Future<void> findUsers( String userName , {int tiempoEspera = 100} ) async {
 }
 
 
+
 ///
-///
-///  Metodo que borra usuarios por el id del usuario 
+///  Metodo que borra usuarios por el id del usuario dicho id es creado con el paquete [ uuid: ^3.0.5 ]
 ///
 
 Future<void> deleteUser( String idUser ) async{
@@ -88,11 +93,11 @@ Future<void> deleteUser( String idUser ) async{
 
 
 
+
 ///
+/// Añadir a un usuario a la lista seleccionamos el tipo de [operacion] para mostrar ese texto dinamicamente ya sea en la creación o la edición
 ///
-/// Añadir a un usuario a la lista
-///
-///
+
 
 Future<void> addUser(User user) async{
 
@@ -102,7 +107,6 @@ Future<void> addUser(User user) async{
 
   await Future.delayed( const Duration(milliseconds: 200));
 
-
   copyListUsersProvider.add(user);
   showowlistUsersProvider.add(user);
 
@@ -110,23 +114,21 @@ Future<void> addUser(User user) async{
         notifyListeners();
 
         Future.delayed( const Duration(milliseconds: 3000)).then((value) {
+
           loadMessage = false;
           notifyListeners();
          } );
-
-  
 
    notifyListeners();
 }
 
 
 
+
 ///
+/// Busqueda del usuario por el [id] 
 ///
-/// ENCONTRAR UN USUARIO
-///
-///
-///
+
 
 Future<User> findUser( String id ) async {
 
@@ -145,8 +147,8 @@ Future<User> findUser( String id ) async {
 
 
 ///
-/// Metodo utilizado para dejar vacia la lista que contiene el usuario actual (el usuario que estamos editando)
-/// es decir que mientras estemos en una operación de edición lo mantenemos y si no lo sacamos de la lista
+/// Método utilizado para dejar vacia la lista que contiene el usuario actual (el usuario que estamos editando)
+/// es decir que mientras estemos en una operación de edición lo mantenemos en la lista de lo contrario lo sacamos de la lista
 /// 
 void borrarUser() => {
  
@@ -156,6 +158,10 @@ void borrarUser() => {
 };
 
 
+///
+/// Método para actualizar el usuario en la ventana emergente MODAL usa las variables [operacion] y [loadMessage] al igual que en el metodo
+/// de addUser
+///
 
 Future<void> updateUser( User user ) async {
 
@@ -167,20 +173,22 @@ Future<void> updateUser( User user ) async {
 
     int index = showowlistUsersProvider.indexOf( userFound );
 
-    if( index != -1){
+        if( index != -1){
 
-        showowlistUsersProvider[ index ] = user;
-        copyListUsersProvider[ index ] = user;
-        loadMessage = true;
-        notifyListeners();
+            showowlistUsersProvider[ index ] = user;
+            copyListUsersProvider[ index ]   = user;
+            
+            loadMessage = true;
+            notifyListeners();
 
-        Future.delayed( const Duration(milliseconds: 3000)).then((value) {
-          loadMessage = false;
-          notifyListeners();
-         } );
+            Future.delayed( const Duration(milliseconds: 3000)).then((value) {
+              
+              loadMessage = false;
+              notifyListeners();
+            } );
 
-    }
-
+        }
+        
       notifyListeners();
 }
 

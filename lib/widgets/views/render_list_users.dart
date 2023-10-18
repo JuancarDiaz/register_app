@@ -27,24 +27,22 @@ class RenderizarListaUsuarios extends StatelessWidget {
     return Expanded(
 
       child: Center(
-
+                                                        /// desplegamos las listas de los usuarios o mostramos mensaje si no hay registros
         child: listUsers.isNotEmpty 
-                                    ? 
-                                      _RenderInfoUser( listUsers: listUsers ) 
-                                    : 
-                                      const _MessageDataNotFound(),
+                                    ? _RenderInfoUser( listUsers: listUsers ) 
+                                    : const _MessageDataNotFound(),
       )
       );
   }
 }
 
 
-///
+
 ///
 /// Clase destinada a renderizar la información del usuario recibe como parámetro [listUsers] la lista de 
 /// usuarios a renderizar
 ///
-///
+
 
 class _RenderInfoUser extends StatelessWidget {
   const _RenderInfoUser({
@@ -99,8 +97,8 @@ class _MessageDataNotFound extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5), // al clipRect Ledamos un borde
                             child: const Padding(
 
-                                  padding:  EdgeInsets.symmetric(horizontal: 90, vertical: 20),
-                                  child:  Text('No se encuentran resultados.')
+                                  padding:  EdgeInsets.symmetric(horizontal: 120, vertical: 20),
+                                  child:  Text('hay pacientes registrados.')
                                   ),
                           )
                         ),

@@ -3,12 +3,13 @@ import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
 
-/// FORMULARIO  de busqueda el cual se compone de un boton y un inputetext para el cual será el encargado
+/// FORMULARIO  de busqueda el cual se compone de un boton y un inputText el cual será el encargado
 /// de filtrar los resultados de la lista de usuarios
 /// Requiere un parametro [textEditingControllerInput] de tipo TextEditingController para poder obtener las 
 /// propiedades del valor del input que es otro elemento encapsulado creado de manera personalizada [CustomTextFormField]
 /// en la clase tenemos a la escucha de eventos del formulario tanto al cambio como al postear el formulario
-//ojo.. importacion dart import 'dart:js_interop';
+/// gestionamos la busqueda en el [onPressed] del botón (lupa)
+
 class FormBusqueda extends StatelessWidget {
 
   // CONSTRUCTOR
@@ -34,7 +35,7 @@ class FormBusqueda extends StatelessWidget {
           Expanded(
             child: CustomTextFormField(
               controller: _textEditingControllerInput,
-              hint: 'Full name',
+              hint: ' Full name',
               onChanged: (value) {
 
                 usersProvider.findUsers( value, tiempoEspera: 400 );
@@ -48,8 +49,9 @@ class FormBusqueda extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.search),
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.blue.shade900),
+              backgroundColor:const MaterialStatePropertyAll(Color.fromARGB(215, 19, 61, 154)),
               iconColor: const MaterialStatePropertyAll(Colors.white),
+              minimumSize: MaterialStateProperty.all(const Size(55, 55)),
             ),
             onPressed: () {
               String inputValue = _textEditingControllerInput.text;
