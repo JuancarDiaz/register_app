@@ -5,7 +5,7 @@ import 'package:register_app/infraestructure/repositorys/users/repository_users.
 
 ///
 ///
-/// para gestionar el estado de los datos y que sean consistentes tengo varios objetos
+/// para gestionar el estado de los datos y que sean consistentes tengo varietos
 /// [listUsersProvider] -> es el encargado de obtener los valores del Repositorio
 /// simulando la procedencia de bases de datos o un servicio, dicho objeto no es tocado
 /// pero es necesario para copiar su información en [copyListUsersProvider] y [sowhowlistUsersProvider]
@@ -18,11 +18,15 @@ import 'package:register_app/infraestructure/repositorys/users/repository_users.
 class UserProvider extends ChangeNotifier {
 
 
+String idUserEdited = '';
 List<User> listUsersProvider = [];
 List<User> copyListUsersProvider = [];
 List<User> showowlistUsersProvider = [];
 List<User> userEdited = [];
 bool initialLoadding = true;
+bool loadMessage = false;
+String operation = '';
+
 
 
 
@@ -92,6 +96,8 @@ Future<void> deleteUser( String idUser ) async{
 
 Future<void> addUser(User user) async{
 
+  operation = 'added';
+
   userEdited.clear();
 
   await Future.delayed( const Duration(milliseconds: 200));
@@ -99,7 +105,17 @@ Future<void> addUser(User user) async{
 
   copyListUsersProvider.add(user);
   showowlistUsersProvider.add(user);
+
+        loadMessage = true;
+        notifyListeners();
+
+        Future.delayed( const Duration(milliseconds: 3000)).then((value) {
+          loadMessage = false;
+          notifyListeners();
+         } );
+
   
+
    notifyListeners();
 }
 
@@ -112,7 +128,7 @@ Future<void> addUser(User user) async{
 ///
 ///
 
-Future<void> findUser( String id ) async {
+Future<User> findUser( String id ) async {
 
     userEdited.clear();
 
@@ -123,13 +139,49 @@ Future<void> findUser( String id ) async {
     userEdited.add(user);
 
     notifyListeners();
+
+    return user;
 }
 
+
+///
+/// Metodo utilizado para dejar vacia la lista que contiene el usuario actual (el usuario que estamos editando)
+/// es decir que mientras estemos en una operación de edición lo mantenemos y si no lo sacamos de la lista
+/// 
 void borrarUser() => {
  
   userEdited.clear(),
   notifyListeners(),
   
 };
+
+
+
+Future<void> updateUser( User user ) async {
+
+    operation = 'Updated';
+    
+    User userFound = showowlistUsersProvider.firstWhere( (user) => user.id == idUserEdited );
+
+    user.id = userFound.id;
+
+    int index = showowlistUsersProvider.indexOf( userFound );
+
+    if( index != -1){
+
+        showowlistUsersProvider[ index ] = user;
+        copyListUsersProvider[ index ] = user;
+        loadMessage = true;
+        notifyListeners();
+
+        Future.delayed( const Duration(milliseconds: 3000)).then((value) {
+          loadMessage = false;
+          notifyListeners();
+         } );
+
+    }
+
+      notifyListeners();
+}
 
 }

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/helpers/modal_helper.dart';
 import 'package:register_app/widgets/forms/form_busqueda.dart';
+import 'package:register_app/widgets/messages/message_info.dart';
 import 'package:register_app/widgets/views/render_list_users.dart';
 
 
@@ -34,7 +35,7 @@ class MainPageRegister extends StatelessWidget {
                     child: _HeaderFilterAndBodyCustom(formattedDate: formattedDate),
               ),
 
-            floatingActionButton: const _NewUserModal(),
+            floatingActionButton: const _ButtonNewUserModal(),
 
     ) ;
   }
@@ -48,8 +49,8 @@ class MainPageRegister extends StatelessWidget {
 /// y mostrar elementos en concreto
 /// boton usado para lanzar el MODAL y crear usuarios nuevos
 
-class _NewUserModal extends StatelessWidget {
-  const _NewUserModal();
+class _ButtonNewUserModal extends StatelessWidget {
+  const _ButtonNewUserModal();
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +98,7 @@ class _HeaderFilterAndBodyCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+      final UserProvider userProvider = context.watch<UserProvider>();
 
     return Padding(       // Padding general a todo el bloque
             
@@ -114,9 +116,15 @@ class _HeaderFilterAndBodyCustom extends StatelessWidget {
 
                   const RenderizarListaUsuarios(),
 
+                  Container(
+                    child: userProvider.loadMessage ?  MessageInfo(operation: userProvider.operation,) : const Text(''),
+                  ),
+                   
                 ],
       ),
+
             );
+      
   }
 }
 

@@ -1,8 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class User {
-  final String id;
+///
+/// uso de la librería Equatable para comparar objetos necesita implementar el metodo [ props ] para establecer la igualdad
+class User extends Equatable {
+
+  late  String id;
   final String fullName;
   final String surname;
   final DateTime birthDate;
@@ -26,6 +30,9 @@ class User {
                      BirthDate:[$birthDate],
                      Genero:[${gender.toString()}]''';
         }
+        
+          @override
+          List<Object?> get props => [ fullName, birthDate, gender, surname ];
 }
 
 

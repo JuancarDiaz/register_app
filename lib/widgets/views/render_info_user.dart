@@ -105,7 +105,9 @@ class _ButtonerRigth extends StatelessWidget {
 // TODO: EDIT
                                         
 
-                                        userProvider.findUser(user.id).then((value) {
+                                        userProvider.findUser(user.id).then( (User user) {
+
+                                            userProvider.idUserEdited = user.id;
 
                                             HelperModal.fireModal(context, 'EDIT');
                                         });
@@ -171,7 +173,7 @@ class _InfoUserLeft extends StatelessWidget {
      children: [
 
 
-       Text( user.fullName, style: const TextStyle(fontSize: 13), ),
+       Text( '${user.fullName} ${user.surname}', style: const TextStyle(fontSize: 13), ),
        Text( 'Birthdate $birthDateFormated', style: const TextStyle(fontSize: 12) ),
        Text( 'Genero: ${user.gender.stringValue}' , style: const TextStyle(fontSize: 13) ),
      ],

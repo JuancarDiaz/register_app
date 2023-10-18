@@ -5,6 +5,7 @@ import 'package:register_app/infraestructure/models/usuario.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
 import 'package:register_app/widgets/helpers/shared_helpers.dart';
 import 'package:register_app/widgets/inputs/custom_input_form_field.dart';
+import 'package:register_app/widgets/messages/message_info.dart';
 
 ///
 /// Clase estatica de Helpers para realizar operaciones 
@@ -128,26 +129,29 @@ final String operacion;
 
 class _BodyFormModalState extends State<_BodyFormModal> {
 
-      // Variables
-  final List<String> items = [
-    'Male',
-    'Female',
-  ];
 
-final List<String> generos = [
-    'Male',
-    'Female',
-  ];
 
-      String? selectedValueGender;
-      var  _currentSelectedDate;
-      final TextEditingController _textEditingControllerDatePicker;
-      final TextEditingController _textEditingControllerName;
-      final TextEditingController _textEditingControllerSurname;
-      
+  String? selectedValueGender;
+  int? contador = 0;
+  DateTime?  _currentSelectedDate;
+  String? username = '';
+  late final TextEditingController _textEditingControllerName;
+  late final TextEditingController _textEditingControllerSurname;
+  late final TextEditingController _textEditingControllerDatePicker;
+  late final UserProvider provider;
+  final List<String> generos = [
+      'Male',
+      'Female',
+    ];
 
-      // Constructor
-      _BodyFormModalState()
+
+ @override
+  void initState() {
+    super.initState();
+    contador = 0;
+  }
+                            
+  _BodyFormModalState()
                             : _textEditingControllerDatePicker = TextEditingController(),
                               _textEditingControllerName = TextEditingController(),
                               _textEditingControllerSurname = TextEditingController();
@@ -164,17 +168,119 @@ Future<DateTime?> getDateTimePicker() {
                           lastDate: DateTime(2025),
                           builder: (context, child) {
 
-                                return Theme(data: ThemeData.dark(), child: child!);
+                                return Theme(data: ThemeData.light(), child: child!);
                           },
                           );
 }
 
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
 
-    final usersProvider = context.watch<UserProvider>();
+     UserProvider usersProvider = context.watch<UserProvider>();
      
+
+String? updateFieldFromName( String field , String operacion){
+
+
+if( operacion == 'EDIT' ){
+
+
+
+void setSelect(){
+
+
+    contador = contador!+1;
+    print('$contador <----- contador ');
+    
+    if(selectedValueGender == null ){  // si no tenemos ningun valor en el select 
+    print('$contador <----- contador ENTRAAAAAAA ');
+
+                            if( usersProvider.userEdited.isNotEmpty){ // y el usuario no es nulo ponemos su valor
+
+                                  GENDER gender = usersProvider.userEdited[0].gender;
+                                  print('generoooooooooo>>>> ${gender.stringValue}');
+                                  selectedValueGender = gender.stringValue;   
+                            }               
+    }
+
+    
+    
+
+}
+
+      String message = '';
+
+      switch( field.toLowerCase() ){
+
+              case 'name':
+                  
+                    setSelect();
+
+                    if( _textEditingControllerName.text.isEmpty ){
+
+                        message = usersProvider.userEdited.isNotEmpty ? usersProvider.userEdited[0].fullName : '  *Name';
+                        _textEditingControllerName.text = message;
+
+                    }else{
+                         message = _textEditingControllerName.text;
+                    }
+
+              break;
+              case 'surname':
+
+                if( _textEditingControllerSurname.text.isEmpty ){
+
+                        message = usersProvider.userEdited.isNotEmpty ? usersProvider.userEdited[0].surname : '  *Surname';
+                        _textEditingControllerSurname.text = message;
+
+                    }else{
+                         message = _textEditingControllerSurname.text;
+                    }
+
+              break;
+                  case 'birthday':
+
+              if( _textEditingControllerDatePicker.text.isEmpty ){
+
+                        message = usersProvider.userEdited.isNotEmpty ? Utils.dateFormatter( usersProvider.userEdited[0].birthDate ) : '  *Surname';
+                        _textEditingControllerDatePicker.text = message;
+
+                    }else{
+                         message = _textEditingControllerDatePicker.text;
+                    }
+              break;
+              //     case 'gender':
+
+              //   //usersProvider.userEdited[0] == null  ? null : (selectedValueGender = usersProvider.userEdited[0].gender.stringValue.toString())
+
+              //       if( usersProvider.userEdited.isNotEmpty ){
+
+              //              GENDER gender = usersProvider.userEdited[0].gender;
+                           
+              //              print('generoooooooooo>>>> ${gender.stringValue}');
+              //              //selectedValueGender = gender.stringValue ;
+              //              message = gender.stringValue;
+              //       }else{
+
+              //         message ='';
+              //       }
+              // break;
+      }
+
+      return message;
+     }
+return null;
+}
+
+
+
+
+
 
     
     return  Padding(
@@ -190,7 +296,7 @@ Future<DateTime?> getDateTimePicker() {
             const SizedBox(height: 10),
       
             CustomTextFormField(
-                                      hint: usersProvider.userEdited.isNotEmpty ? usersProvider.userEdited[0].fullName : '  *Name',
+                                      hint: updateFieldFromName( 'name' ,widget.operacion ) ?? '  *Name',
                                       controller: _textEditingControllerName,
                                        
                                       ),
@@ -198,18 +304,19 @@ Future<DateTime?> getDateTimePicker() {
             const SizedBox(height: 10),
             
             CustomTextFormField(
-                                       hint: '  *Surname',
+                                       hint: updateFieldFromName( 'surname', widget.operacion ) ?? '  *Surname',
                                        controller: _textEditingControllerSurname,),
             
             const SizedBox(height: 10),
             
             CustomTextFormField(
+                                      hint:updateFieldFromName( 'birthday',widget.operacion ) ?? '',
                                       icon: const Icon( Icons.event, size: 25),
                                       controller: _textEditingControllerDatePicker,
                                       onTap: ()async {
                                         _currentSelectedDate = await getDateTimePicker();
                                             try{
-                                                    _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate)}';
+                                                    _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate!)}';
                                             }catch(error ){
                                                   _textEditingControllerDatePicker.text = '';
                                             }
@@ -220,7 +327,7 @@ Future<DateTime?> getDateTimePicker() {
                                         _currentSelectedDate = await getDateTimePicker();
 
                                                   try{
-                                                          _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate)}';
+                                                          _textEditingControllerDatePicker.text = '  ${Utils.dateFormatter(_currentSelectedDate!)}';
                                                   }catch(error ){
                                                         _textEditingControllerDatePicker.text = '';
                                                   }
@@ -277,10 +384,15 @@ Future<DateTime?> getDateTimePicker() {
                                                       ),
                                                     ))
                                                 .toList(),
-                                            value: selectedValueGender,
+                                            value:   selectedValueGender ,
                                             onChanged: (String? value) {
+
+                                              selectedValueGender = value;
+                                                print('ejecutando $value');
+                                                
+                                              
                                               setState(() {
-                                                selectedValueGender = value;
+                                                
                                               });
                                             },
                                             buttonStyleData: ButtonStyleData(
@@ -360,22 +472,45 @@ Wrap(
                     case 'NEW':
                                   // TODO: CREAR NUEVO USUARIO!
 
+                                          try{
 
-                                    final User user = User(
-                                                              fullName: _textEditingControllerName.text,
-                                                              surname: _textEditingControllerSurname.text,
-                                                              birthDate: _currentSelectedDate,
-                                                              gender: selectedValueGender == 'Male'? GENDER.male : GENDER.female 
-                                                              );
+                                            final User newUser = User(
+                                                fullName: _textEditingControllerName.text,
+                                                surname: _textEditingControllerSurname.text,
+                                                birthDate: _currentSelectedDate! == DateTime.now() ? throw Exception('División por cero no permitida') : _currentSelectedDate!  ,
+                                                gender: selectedValueGender == 'Male'? GENDER.male : GENDER.female 
+                                                );
+  
+                                                usersProvider.addUser(newUser);
 
                                                          
-                                                          usersProvider.addUser(user);
-                                                          Navigator.pop(context);
+
+                                            }catch( error ){
+
+                                                        print(error);
+                                            }
+
+                                                          //TODO: MOSTRAR SNACKBAR
+
+                                                           Navigator.pop(context);
+
+                                                         
 
                       break;
 
                       case 'EDIT':
                                   // TODO: EDITAR NUEVO USUARIO!
+
+                                 final User userEdited = User(
+                                                              fullName: _textEditingControllerName.text,
+                                                              surname: _textEditingControllerSurname.text,
+                                                              birthDate: _currentSelectedDate ?? usersProvider.userEdited[0].birthDate ,
+                                                              gender: selectedValueGender == 'Male'? GENDER.male : GENDER.female 
+                                                              );
+
+                                  usersProvider.updateUser(userEdited);
+
+                                  Navigator.pop(context);
                       break;
                 
                 }
