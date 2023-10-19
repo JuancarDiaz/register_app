@@ -3,9 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:register_app/config/router/app_router.dart';
 import 'package:register_app/config/theme/app_theme.dart';
 import 'package:register_app/presentation/providers/users_provider.dart';
+Future main() async{
 
-void main() {
+
   runApp(const MyApp());
+  
+  
 }
 
 
