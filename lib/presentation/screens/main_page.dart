@@ -99,31 +99,33 @@ class _HeaderFilterAndBodyCustom extends StatelessWidget {
 
       final UserProvider userProvider = context.watch<UserProvider>();
 
-    return Padding(       // Padding general a todo el bloque
-            
-      padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1), 
-            
-      child: Column( // Disposición interior en columnas de todos los elementos hijos
-            
+    return Column(       // Padding general a todo el bloque
+        
         crossAxisAlignment: CrossAxisAlignment.center, // centrado del contenido
         
                 children: [
  
                   _Header(formattedDate: formattedDate),
 
-                  _Filtro(textEditingControllerInput: _textEditingControllerInput),
-
-                  const RenderizarListaUsuarios(),
-
                   Container(
-                    child: userProvider.loadMessage ?  MessageInfo(operation: userProvider.operation,) : const Text(''),
+                    padding: const EdgeInsets.symmetric(horizontal: 33.0, vertical: 1),
+                    child: _Filtro(textEditingControllerInput: _textEditingControllerInput),
                   ),
-                   
-                ],
-      ),
 
-            );
-      
+                  const Expanded(
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 18.0, vertical: 1),
+                      child: RenderizarListaUsuarios(),
+                    ),),
+                 
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 1),
+                      child: userProvider.loadMessage
+                                                     ?  MessageInfo(operation: userProvider.operation,)
+                                                     : const Text(''),
+                    ),
+                ],
+            );  
   }
 }
 
@@ -191,41 +193,39 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding( // elementos centrados
-
-      padding: const EdgeInsets.fromLTRB(1, 1, 1, 13),
-
-      child: ClipRRect( // Creamos un elemento en cual va ha tener forma de cuadrado y
-                        // dentro de el metemos todos sus elementos uno a cada lado
-
-        child: Material( // Creamos un contenedor de Material para darle la apariencia
-    
-          color:Colors.grey.shade200,
-          shadowColor: Colors.black,
-    
-          borderRadius: BorderRadius.circular(5), // al clipRect Ledamos un borde
-          
-                child: Padding(
-
-                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-
-                  child:  Row(
-    
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      
-                        children: [
-                          
-                          const Text('Hi, Welcome!',style: TextStyle(fontSize: 22,
-                                                                      color: Color.fromARGB(255, 59, 80, 220),
-                                                                      fontWeight: FontWeight.w500)),
-                          Text( formattedDate ,style: const TextStyle(fontSize: 16)),
-         
-                        ],
-                  ),
-                ),
-        )
+    return Padding(
+  padding: const EdgeInsets.fromLTRB(0, 0, 0, 13),
+  child: Material(
+    color:const Color.fromARGB(255, 242, 240, 240),
+    elevation: 6,
+    shadowColor: const Color.fromARGB(255, 243, 242, 241),
+    borderRadius: const BorderRadius.only(
+      bottomLeft: Radius.circular(18),
+      bottomRight: Radius.circular(18),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Hi, Welcome!',
+            style: TextStyle(
+              fontSize: 22,
+              color: Color.fromARGB(255, 59, 80, 220),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            formattedDate,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
       ),
-    );
+    ),
+  ),
+);
+
   }
 }
 

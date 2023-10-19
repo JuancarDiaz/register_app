@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     
         routerConfig:  appRouter,
     
-        title: 'Registro',
+        title: 'Registro',      
     
         debugShowCheckedModeBanner: false,
     

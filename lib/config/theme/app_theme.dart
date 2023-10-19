@@ -22,6 +22,7 @@ class AppTheme {
                       => ThemeData(
                         useMaterial3: true,
                         colorSchemeSeed:  colorList[ selectedColor ],
+                        
                       );
 
 }

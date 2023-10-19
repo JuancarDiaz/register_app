@@ -84,25 +84,22 @@ class _MessageDataNotFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding( // elementos centrados
-
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-
-      child: ClipRRect( 
-                        
-                child: Material( // Creamos un contenedor de Material para darle la apariencia
-            
-                            color: const Color.fromARGB(255, 250, 248, 217),
-                            shadowColor: Colors.black,
-                            borderRadius: BorderRadius.circular(5), // al clipRect Ledamos un borde
-                            child: const Padding(
-
-                                  padding:  EdgeInsets.symmetric(horizontal: 120, vertical: 20),
-                                  child:  Text('hay pacientes registrados.')
-                                  ),
-                          )
-                        ),
+    return  Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                  child: Material(
+                    elevation: 6, // Establece la elevación para agregar sombra
+                    color: const Color.fromARGB(255, 250, 248, 217),
+                    borderRadius: BorderRadius.circular(5),
+                    child: const Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                      child: Text(
+                        'There are no registered patients.',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
                 );
+
   }
 }
 

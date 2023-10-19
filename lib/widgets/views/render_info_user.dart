@@ -47,7 +47,7 @@ class _InfoUserEditDeleteState extends State<InfoUserEditDelete> {
         
       },
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(5, 2, 15, 5),
+        padding: const EdgeInsets.fromLTRB(5, 2, 5, 5),
         child: Container(
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 242, 241, 241),
@@ -189,7 +189,7 @@ class _InfoUserLeft extends StatelessWidget {
           ), 
       Row(
             children: [
-            const Text( 'Genero: ' , style: TextStyle(fontSize: 13,fontWeight: FontWeight.w800) ),
+            const Text( 'Gender: ' , style: TextStyle(fontSize: 13,fontWeight: FontWeight.w800) ),
             Text(  user.gender.stringValue , style: const TextStyle(fontSize: 13) ),
 
               ],
