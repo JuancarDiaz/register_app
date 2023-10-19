@@ -16,8 +16,10 @@ class StartPageRegister extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/robot.jpg'), fit: BoxFit.cover),
+          image: DecorationImage(   // 
+              //image: AssetImage('assets/images/robot.jpg'), fit: BoxFit.cover), es posible que no estén disponibles los assets ... uso imagen web
+              image: NetworkImage('https://media.urgente24.com/p/f2a1c41c3b8a64985ecf9af7770da015/adjuntos/319/imagenes/002/864/0002864755/las-preguntas-mas-frecuentes-sobre-la-realidad-virtual-y-la-inteligencia-artificialjpg.jpg'),fit: BoxFit.cover,scale: 1.0
+              ),
         ),
         child: Center(
           child: Column(
@@ -33,7 +35,7 @@ class StartPageRegister extends StatelessWidget {
 
               _CustomButtom(
                 texto: 'Start',
-                colorBackGround: Color.fromARGB(255, 241, 240, 240),
+                colorBackGround: const Color.fromARGB(255, 241, 240, 240),
                 colorTextoSelected: Colors.black,
                 onPressedCallback: () {
                   context.push('/mainList');
