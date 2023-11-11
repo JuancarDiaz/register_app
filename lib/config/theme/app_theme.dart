@@ -7,6 +7,7 @@ final List<Color> colorList = [
   Colors.green,
   Colors.red,
   Colors.pink,
+  Colors.white10,
 ];
 
 class AppTheme {
